@@ -1,0 +1,51 @@
+<h2>Lista de tareas</h2>
+
+<a href="<?php echo APP_URL."tareas/Agregar"; ?>" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></a>
+<table border="1">
+	<tr>
+		<th>ID</th>
+		<th>Nombre</th>
+		<th>Descripción</th>
+		<th>Fecha</th>
+		<th>Prioridad</th>
+		<th>Status</th>
+		<th>Categoria</th>
+		<th>Acción</th>
+	</tr>
+<?php foreach ($this->tareas as $tarea): ?>
+	<tr>
+		<td><?php echo $tarea["tareas"]["id"]; ?></td>
+		<td><?php echo $tarea["tareas"]["nombre"]; ?></td>
+		<td><?php echo $tarea["tareas"]["descripcion"]; ?></td>
+		<td><?php $date = date_create($tarea["tareas"]["fecha"]); 
+			echo date_format($date, 'd/m/y'); 
+			?></td>
+		<td>
+		<?php if ($tarea["tareas"]["prioridad"]<=3) {
+			echo '<span class="new badge red" data-badge-caption="Baja&nbsp;&nbsp;&nbsp;">→</span>'; 
+		}else if ($tarea["tareas"]["prioridad"]<=6) {
+			echo '<span class="new badge blue" data-badge-caption="Media">→</span>';
+		}else if ($tarea["tareas"]["prioridad"]<=10) {
+			echo '<span class="new badge gren" data-badge-caption="Alta&nbsp;&nbsp;&nbsp;&nbsp;">→</span>';
+		}
+		?>
+		</td>
+		<td><?php echo $tarea["tareas"]["prioridad"]; ?></td>
+		<td><?php echo $tarea["categorias"]["nombre"]; ?></td>
+		<td>
+		<a href="<?php echo APP_URL."tareas/editar/".$tarea["tareas"]["id"]; ?>"><i class="material-icons" title="Editar">edit</i></a>  
+		<a href="<?php echo APP_URL."tareas/eliminar/".$tarea["tareas"]["id"]; ?>"><i class="material-icons" title="Eliminar para siempre">delete_forever</i></a> 
+		
+		<?php
+			if ($tarea["tareas"]["estatus"]==1) { ?>
+				<a href="<?php echo APP_URL."tareas/cambiarEstado/".$tarea["tareas"]["id"]."/0"; ?>"><i class="material-icons" title="Cerrar">lock_open</i></a>
+		<?php }elseif($tarea["tareas"]["estatus"]==0){ ?>
+				<a href="<?php echo APP_URL."tareas/cambiarEstado/".$tarea["tareas"]["id"]."/1"; ?>"><i class="material-icons" title="Abrir">lock_outline</i></a>
+		
+		<?php } ?>
+		</td>
+		
+	</tr>
+<?php endforeach; ?>
+
+</table>
